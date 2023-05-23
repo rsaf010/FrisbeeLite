@@ -27,24 +27,28 @@ class PidVidDialog(wx.Dialog):
             useMetal=False,
             ):
 
-        pre = wx.PreDialog()
-        pre.Create(parent, ID, title, pos, size, style)
-        self.PostCreate(pre)
+        super(PidVidDialog, self).__init__(parent, ID, title, pos=pos, size=size, style=style)
+
+        #self.Create(parent, ID, title, pos, size, style)
+        #self.PostCreate(self)
+        #pre = wx.PreDialog()
+        #pre.Create(parent, ID, title, pos, size, style)
+        #self.PostCreate(pre)
 
         if 'wxMac' in wx.PlatformInfo and useMetal:
             self.SetExtraStyle(wx.DIALOG_EX_METAL)
 
-	self.wPIDListmsb = ["0"]
-	self.wPIDListlsb = ["0"]
-	self.wVIDListmsb = ["0"]
-	self.wVIDListlsb = ["0"]
-	self.PID = 0
-	self.VID = 0
+        self.wPIDListmsb = ["0"]
+        self.wPIDListlsb = ["0"]
+        self.wVIDListmsb = ["0"]
+        self.wVIDListlsb = ["0"]
+        self.PID = 0
+        self.VID = 0
 
-	self.wPIDListmsb = ["%02x" % i for i in range (256)]
-	self.wPIDListlsb = self.wPIDListmsb
-	self.wVIDListmsb = self.wPIDListmsb
-	self.wVIDListlsb = self.wPIDListmsb
+        self.wPIDListmsb = ["%02x" % i for i in range (256)]
+        self.wPIDListlsb = self.wPIDListmsb
+        self.wVIDListmsb = self.wPIDListmsb
+        self.wVIDListlsb = self.wPIDListmsb
 
         sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -62,16 +66,16 @@ class PidVidDialog(wx.Dialog):
                          wx.CB_DROPDOWN
                          )
 
-	box.Add(cbPID1, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
+        box.Add(cbPID1, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         self.Bind(wx.EVT_COMBOBOX, self.EvtcbPID1, cbPID1)
 
-	cbPID2 = wx.ComboBox(self, 610, "0",(0,0), 
+        cbPID2 = wx.ComboBox(self, 610, "0",(0,0), 
                          (65, -1), self.wPIDListlsb,
                          wx.CB_DROPDOWN
                          )
 
-	box.Add(cbPID2, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
+        box.Add(cbPID2, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         self.Bind(wx.EVT_COMBOBOX, self.EvtcbPID2, cbPID2)
 
@@ -83,22 +87,22 @@ class PidVidDialog(wx.Dialog):
                          wx.CB_DROPDOWN
                          )
 
-	box.Add(cbVID1, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
+        box.Add(cbVID1, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
         self.Bind(wx.EVT_COMBOBOX, self.EvtcbVID1, cbVID1)
 
-	cbVID2 = wx.ComboBox(self, 611, "0",(0,0),
+        cbVID2 = wx.ComboBox(self, 611, "0",(0,0),
                          (65, -1), self.wVIDListlsb,
                          wx.CB_DROPDOWN
                          )
 
-	box.Add(cbVID2, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
+        box.Add(cbVID2, 1, wx.ALIGN_CENTRE|wx.ALL, 5)
         self.Bind(wx.EVT_COMBOBOX, self.EvtcbVID2, cbVID2)
 
 
         sizer.Add(box, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         line = wx.StaticLine(self, -1, size=(20,-1), style=wx.LI_HORIZONTAL)
-        sizer.Add(line, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.RIGHT|wx.TOP, 5)
+        #sizer.Add(line, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.RIGHT|wx.TOP, 5)
 
         btnsizer = wx.StdDialogButtonSizer()
                 
@@ -110,7 +114,7 @@ class PidVidDialog(wx.Dialog):
         btnsizer.AddButton(btn)
         btnsizer.Realize()
 
-        sizer.Add(btnsizer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
+        #sizer.Add(btnsizer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
         self.SetSizer(sizer)
         sizer.Fit(self)
@@ -147,7 +151,7 @@ class MainPanel(wx.Panel):
         self.pid = 0x1297	#iPhone
         self.vid = 0x05ac	#iPhone
 
-	self.dev = 0
+        self.dev = 0
 
         x = 0
         
@@ -157,34 +161,34 @@ class MainPanel(wx.Panel):
         self.wValueListlsb = []
         self.wIndexListmsb = [] 
         self.wIndexListlsb = [] 
-	self.wLengthListmsb = []
-	self.wLengthListlsb = []
+        self.wLengthListmsb = []
+        self.wLengthListlsb = []
  
         self.bmRequestType = 0
         self.bRequest = 0
         self.wValue = 0
         self.wIndex = 0
-	self.wLength = 0
+        self.wLength = 0
 
         self.bmRequestTypeE = 255
         self.bRequestE = 255
         self.wValueE = 65535
         self.wIndexE = 65535
 
-	self.bmRequestTypefuzz = False
+        self.bmRequestTypefuzz = False
         self.bRequestfuzz = False
         self.wValuefuzz = False
         self.wIndexfuzz = False
         
-	self.bmRequestTypeList = ["%02x" % i for i in range (256)]
+        self.bmRequestTypeList = ["%02x" % i for i in range (256)]
         
         self.bRequestList = self.bmRequestTypeList
         self.wValueListmsb = self.bmRequestTypeList
-	self.wValueListlsb = self.bmRequestTypeList
-	self.wIndexListmsb = self.bmRequestTypeList
-	self.wIndexListlsb = self.bmRequestTypeList
-	self.wLengthListmsb = self.bmRequestTypeList
-	self.wLengthListlsb = self.bmRequestTypeList	
+        self.wValueListlsb = self.bmRequestTypeList
+        self.wIndexListmsb = self.bmRequestTypeList
+        self.wIndexListlsb = self.bmRequestTypeList
+        self.wLengthListmsb = self.bmRequestTypeList
+        self.wLengthListlsb = self.bmRequestTypeList	
                            
         self.fuzzing = 0
  
@@ -212,7 +216,8 @@ class MainPanel(wx.Panel):
                 
 # Create status bar
 
-        self.statusbar = self.parent.CreateStatusBar(3, wx.ST_SIZEGRIP)
+        self.statusbar = self.parent.CreateStatusBar(3, 0 )
+        #self.statusbar = self.parent.CreateStatusBar(3, wx.ST_SIZEGRIP)
         self.statusbar.SetStatusWidths([-1,-2, -2])
         self.statusbar.SetStatusText("", 0)
         self.statusbar.SetStatusText("Connection Status: Not connected", 1) 
@@ -288,7 +293,7 @@ class MainPanel(wx.Panel):
                          )
         self.Bind(wx.EVT_COMBOBOX, self.EvtcbValue1, self.cbValue1)
 
-	self.cbValue2 = wx.ComboBox(self, 512, "00", (185, 210),
+        self.cbValue2 = wx.ComboBox(self, 512, "00", (185, 210),
                          (65, -1), self.wValueListlsb,
                          wx.CB_DROPDOWN
                          )
@@ -330,7 +335,7 @@ class MainPanel(wx.Panel):
                          )
         self.Bind(wx.EVT_COMBOBOX, self.EvtcbValue1E, self.cbValue1E)
 
-	self.cbValue2E = wx.ComboBox(self, 516, "ff", (355, 210),
+        self.cbValue2E = wx.ComboBox(self, 516, "ff", (355, 210),
                          (65, -1), self.wValueListlsb,
                          wx.CB_DROPDOWN
                          )
@@ -369,17 +374,17 @@ class MainPanel(wx.Panel):
         
 # Checkboxes
 
-	cb1 = wx.CheckBox(self, -1, "", (260, 150), (20, 20), wx.BORDER)  
-	self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox1, cb1)
+        cb1 = wx.CheckBox(self, -1, "", (260, 150), (20, 20), wx.BORDER)  
+        self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox1, cb1)
 
-	cb2 = wx.CheckBox(self, -1, "", (260, 180), (20, 20), wx.BORDER) 
-	self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox2, cb2)
+        cb2 = wx.CheckBox(self, -1, "", (260, 180), (20, 20), wx.BORDER) 
+        self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox2, cb2)
 
-	cb3 = wx.CheckBox(self, -1, "", (260, 210), (20, 20), wx.BORDER) 
-	self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox3, cb3)
+        cb3 = wx.CheckBox(self, -1, "", (260, 210), (20, 20), wx.BORDER) 
+        self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox3, cb3)
 
-	cb4 = wx.CheckBox(self, -1, "", (260, 240), (20, 20), wx.BORDER)   
-	self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox4, cb4)       
+        cb4 = wx.CheckBox(self, -1, "", (260, 240), (20, 20), wx.BORDER)   
+        self.Bind(wx.EVT_CHECKBOX, self.EvtCheckBox4, cb4)       
 
 # Buttons
 
@@ -427,28 +432,28 @@ class MainPanel(wx.Panel):
 
     def	updatevalues(self):
 
-	if self.bmRequestType == 256:
-		self.bmRequestType = 255
-	if self.bRequest == 256:
-		self.bRequest = 255
-	if self.wValue == 65536:
-		self.wValue = 65535
-	if self.wIndex == 65536:
-		self.wIndex = 65535
+        if self.bmRequestType == 256:
+            self.bmRequestType = 255
+        if self.bRequest == 256:
+            self.bRequest = 255
+        if self.wValue == 65536:
+            self.wValue = 65535
+        if self.wIndex == 65536:
+            self.wIndex = 65535
 
-	self.cbmRequestType.SetValue("%02x" % self.bmRequestType)
-	self.cbRequest.SetValue("%02x" % self.bRequest)
+        self.cbmRequestType.SetValue("%02x" % self.bmRequestType)
+        self.cbRequest.SetValue("%02x" % self.bRequest)
 
-	msb = self.wValue
-	self.cbValue1.SetValue("%02x" % (msb >> 8))
-	lsb = self.wValue
-	self.cbValue2.SetValue("%02x" % (lsb & 0xff))
+        msb = self.wValue
+        self.cbValue1.SetValue("%02x" % (msb >> 8))
+        lsb = self.wValue
+        self.cbValue2.SetValue("%02x" % (lsb & 0xff))
 
 
-	msb = self.wIndex
-	self.cbIndex1.SetValue("%02x" % (msb >> 8))
-	lsb = self.wIndex
-	self.cbIndex2.SetValue("%02x" % (lsb & 0xff))
+        msb = self.wIndex
+        self.cbIndex1.SetValue("%02x" % (msb >> 8))
+        lsb = self.wIndex
+        self.cbIndex2.SetValue("%02x" % (lsb & 0xff))
 
     def EvtcbmRequestType(self, event):
         selected = event.GetString()
@@ -460,39 +465,39 @@ class MainPanel(wx.Panel):
     
     def EvtcbValue1(self, event):
         selected = event.GetString()
-	lsb = self.wValue & 0xff
+        lsb = self.wValue & 0xff
         self.wValue = int (selected,16) << 8 
-	self.wValue += lsb	
+        self.wValue += lsb	
 
     def EvtcbValue2(self, event):
         selected = event.GetString()
-	msb = self.wValue & 0xff00
+        msb = self.wValue & 0xff00
         self.wValue = int (selected,16)
-	self.wValue += msb	
+        self.wValue += msb	
 
     def EvtcbIndex1(self, event):
         selected = event.GetString()
-	lsb = self.wIndex & 0xff
+        lsb = self.wIndex & 0xff
         self.wIndex = int (selected,16)	<< 8
-	self.wIndex += lsb
+        self.wIndex += lsb
 
     def EvtcbIndex2(self, event):
-        selected = event.GetString()
-	msb = self.wIndex & 0xff00
+        selected = event.GetString()    
+        msb = self.wIndex & 0xff00
         self.wIndex = int (selected,16)
-	self.wIndex += msb
+        self.wIndex += msb
 
     def EvtcbLength1(self, event):
         selected = event.GetString()
-	lsb = self.wLength & 0xff
+        lsb = self.wLength & 0xff
         self.wLength = int (selected,16) << 8
-	self.wLength += lsb
+        self.wLength += lsb
 
     def EvtcbLength2(self, event):
         selected = event.GetString()
-	msb = self.wLength & 0xff00
+        msb = self.wLength & 0xff00
         self.wLength = int (selected,16)
-	self.wLength += msb
+        self.wLength += msb
 
     def EvtcbmRequestTypeE(self, event):
         selected = event.GetString()
@@ -504,27 +509,27 @@ class MainPanel(wx.Panel):
     
     def EvtcbValue1E(self, event):
         selected = event.GetString()
-	lsb = self.wValueE & 0xff
+        lsb = self.wValueE & 0xff
         self.wValueE = int (selected,16) << 8
-	self.wValueE += lsb
+        self.wValueE += lsb
 
     def EvtcbValue2E(self, event):
         selected = event.GetString()
-	msb = self.wValueE & 0xff00
+        msb = self.wValueE & 0xff00
         self.wValueE = int (selected,16)	
-	self.wValueE += msb
+        self.wValueE += msb
 
     def EvtcbIndex1E(self, event):
         selected = event.GetString()
-	lsb = self.wIndexE & 0xff
+        lsb = self.wIndexE & 0xff
         self.wIndexE = int (selected,16) << 8
-	self.wIndexE += lsb
+        self.wIndexE += lsb
 
     def EvtcbIndex2E(self, event):
         selected = event.GetString()
-	msb = self.wIndexE & 0xff00
+        msb = self.wIndexE & 0xff00
         self.wIndexE = int (selected,16)
-	self.wIndexE += msb
+        self.wIndexE += msb
 
     def EvtCheckBox1(self, event):
         self.bmRequestTypefuzz = event.IsChecked()
@@ -551,153 +556,149 @@ class MainPanel(wx.Panel):
         dlg.CenterOnScreen()
         
         val = dlg.ShowModal()
-	if val == wx.ID_OK:
+        if val == wx.ID_OK:
 
-		self.dev = usb.core.find(idVendor=dlg.VID, idProduct=dlg.PID)
+            self.dev = usb.core.find(idVendor=dlg.VID, idProduct=dlg.PID)
  
-        	if self.dev is None:
-	  		self.statusbar.SetStatusText("Connection Status: Not connected", 1)
-          		wx.MessageBox("Device not found!", caption="Error", style=wx.OK|wx.ICON_ERROR, parent=self)	  
-          		return(1)
-		else: 
+            if self.dev is None:
+                self.statusbar.SetStatusText("Connection Status: Not connected", 1)
+                wx.MessageBox("Device not found!", caption="Error", style=wx.OK|wx.ICON_ERROR, parent=self)
+                return(1)
+        
+            else: 
 
-			self.statusbar.SetStatusText("Connection Status: Connected", 1)
-          		wx.MessageBox("Connected to device", caption="Success", style=wx.OK|wx.ICON_INFORMATION, parent=self)	  
-          		return(1)
-			self.vid = dlg.VID
-			self.pid = dlg.PID
+                self.statusbar.SetStatusText("Connection Status: Connected", 1)
+                wx.MessageBox("Connected to device", caption="Success", style=wx.OK|wx.ICON_INFORMATION, parent=self)	  
+                return(1)
+                self.vid = dlg.VID
+                self.pid = dlg.PID
    
         dlg.Destroy()
 
 
 
     def SingleShot(self, event):
- 
-	if not self.dev:
-          self.dev = usb.core.find(idVendor=self.vid, idProduct=self.pid)
-
+        if not self.dev:
+               self.dev = usb.core.find(idVendor=self.vid, idProduct=self.pid)
         if self.dev is None:
-          wx.MessageBox("Device not found!", caption="Error", style=wx.OK|wx.ICON_ERROR, parent=self)
-          return(1) 
-  
-	self.dev.set_configuration()     
+            wx.MessageBox("Device not found!", caption="Error", style=wx.OK|wx.ICON_ERROR, parent=self)
+            return(1) 
+        
+        self.dev.set_configuration()     
 
-	try:
-	
-          print time.strftime("%Y/%m/%d %H:%M:%S", time.localtime()),
-          print "    bmRequestType: " + "%02x" % self.bmRequestType + " bRequest: " + "%02x" % self.bRequest + " wValue: " + "%04x" % self.wValue + " wIndex: " + "%04x" % self.wIndex + " wLength: " + "%04x" % self.wLength
+    try:
+        print(time.strftime("%Y/%m/%d %H:%M:%S", time.localtime()))
+        print("    bmRequestType: " + "%02x" % self.bmRequestType + " bRequest: " + "%02x" % self.bRequest + " wValue: " + "%04x" % self.wValue + " wIndex: " + "%04x" % self.wIndex + " wLength: " + "%04x" % self.wLength)
        	  
-          recv = self.dev.ctrl_transfer(self.bmRequestType, self.bRequest, self.wValue, self.wIndex, self.wLength)
-	  print "Received: " + str(recv)
-	  print "Received: " + recv [0]
-	  print "Received: " + recv [0] [0]
+        recv = self.dev.ctrl_transfer(self.bmRequestType, self.bRequest, self.wValue, self.wIndex, self.wLength)
+        print("Received: " + str(recv))
+        print("Received: " + recv [0])
+        print("Received: " + recv [0] [0])
 
-	except:
-	  pass
+    except:
+        pass
 
 
     def FuzzDevice(self, event):
 
-	logfilepath = "FrisbeeLite_logfile_" + time.strftime("%Y-%m-%d", time.localtime()) + ".txt"
-	fplog = file(logfilepath, 'a')	
-	fplog.write("\n\n**** FrisbeeLite - Log file ****\n\n")
-	fplog.close()
+        logfilepath = "FrisbeeLite_logfile_" + time.strftime("%Y-%m-%d", time.localtime()) + ".txt"
+        fplog = open(logfilepath, 'a')	
+        fplog.write("\n\n**** FrisbeeLite - Log file ****\n\n")
+        fplog.close()
 
-	firstrun = True
+        firstrun = True
         self.fuzzing = 1
-	self.statusbar.SetStatusText("Fuzzing Status: Fuzzing", 2) 
+        self.statusbar.SetStatusText("Fuzzing Status: Fuzzing", 2) 
 
-	if not self.dev:
+        if not self.dev:
           self.dev = usb.core.find(idVendor=self.vid, idProduct=self.pid)
  
         if self.dev is None:
-	  self.statusbar.SetStatusText("Fuzzing Status: Not fuzzing", 2)
-          wx.MessageBox("Device not found!", caption="Error", style=wx.OK|wx.ICON_ERROR, parent=self)	  
-          return(1) 
+            self.statusbar.SetStatusText("Fuzzing Status: Not fuzzing", 2)
+            wx.MessageBox("Device not found!", caption="Error", style=wx.OK|wx.ICON_ERROR, parent=self)	  
+            return(1) 
  
-	self.dev.set_configuration()
+        self.dev.set_configuration()
 
-	if (self.bmRequestTypefuzz and not firstrun): 
-	  self.bmRequestType = 0
-	while (self.bmRequestType < self.bmRequestTypeE+1):
-          self.FuzzProgress.SetValue(self.bmRequestType+1)
+        if (self.bmRequestTypefuzz and not firstrun): 
+            self.bmRequestType = 0
+        while (self.bmRequestType < self.bmRequestTypeE+1):
+            self.FuzzProgress.SetValue(self.bmRequestType+1)
 	  
-	  if (self.bRequestfuzz and not firstrun): 
-	    self.bRequest = 0
-          while (self.bRequest < self.bRequestE+1):
+            if (self.bRequestfuzz and not firstrun): 
+                self.bRequest = 0
+            while (self.bRequest < self.bRequestE+1):
      	    
-	    if (self.wValuefuzz and not firstrun):
-	      self.wValue = 0
-     	    while (self.wValue < self.wValueE+1):
+                if (self.wValuefuzz and not firstrun):
+                    self.wValue = 0
+                while (self.wValue < self.wValueE+1):
 	      
-	      if (self.wIndexfuzz and not firstrun):
-	        self.wIndex = 0
-              while (self.wIndex < self.wIndexE+1):
-                wx.Yield() 
+                    if (self.wIndexfuzz and not firstrun):
+                        self.wIndex = 0
+                    while (self.wIndex < self.wIndexE+1):
+                        wx.Yield() 
 		            
-                if (self.fuzzing == 1):
-		  firstrun = False
+                        if (self.fuzzing == 1):
+                            firstrun = False
+                            try:  
 
-		  try:  
-
-		    fplog = file(logfilepath, 'a')	
-		    fplog.write(time.strftime("%Y/%m/%d %H:%M:%S", time.localtime()))
-		    line = "    bmRequestType: " + "%02x" % self.bmRequestType + " bRequest: " + "%02x" % self.bRequest + " wValue: " + "%04x" % self.wValue + " wIndex: " + "%04x" % self.wIndex + " wLength: " + "%04x" % self.wLength
-		    fplog.write(line)
-	            fplog.write("\n")	
-		    fplog.close()                
+                                fplog = open(logfilepath, 'a')	
+                                fplog.write(time.strftime("%Y/%m/%d %H:%M:%S", time.localtime()))
+                                line = "    bmRequestType: " + "%02x" % self.bmRequestType + " bRequest: " + "%02x" % self.bRequest + " wValue: " + "%04x" % self.wValue + " wIndex: " + "%04x" % self.wIndex + " wLength: " + "%04x" % self.wLength
+                                fplog.write(line)
+                                fplog.write("\n")	
+                                fplog.close()                
                     
-                    print time.strftime("%Y/%m/%d %H:%M:%S", time.localtime()),
-                    print "    bmRequestType: " + "%02x" % self.bmRequestType + " bRequest: " + "%02x" % self.bRequest + " wValue: " + "%04x" % self.wValue + " wIndex: " + "%04x" % self.wIndex + " wLength: " + "%04x" % self.wLength
+                                print(time.strftime("%Y/%m/%d %H:%M:%S", time.localtime()))
+                                print("    bmRequestType: " + "%02x" % self.bmRequestType + " bRequest: " + "%02x" % self.bRequest + " wValue: " + "%04x" % self.wValue + " wIndex: " + "%04x" % self.wIndex + " wLength: " + "%04x" % self.wLength)
 		  
-		    recv = self.dev.ctrl_transfer(self.bmRequestType, self.bRequest, self.wValue, self.wIndex, self.wLength)
-		    print "Received: " + repr(recv)
+                                recv = self.dev.ctrl_transfer(self.bmRequestType, self.bRequest, self.wValue, self.wIndex, self.wLength)
+                                print("Received: " + repr(recv))
 
-		    fplog = file(logfilepath, 'a')
-		    line = "Received: " + repr(recv)
-		    fplog.write(line)
-		    fplog.write("\n")
-		    fplog.close()
+                                fplog = open(logfilepath, 'a')
+                                line = "Received: " + repr(recv)
+                                fplog.write(line)
+                                fplog.write("\n")
+                                fplog.close()
 
-                  except:
+                            except:
+                                pass
+                        else:
+                            self.fuzzing = 0
+                            self.statusbar.SetStatusText("Fuzzing Status: Not fuzzing", 2)
+                            self.FuzzProgress.SetValue(0)
+                            self.updatevalues()
+                            return
 
-                    pass
-                
-                else:
-	          self.fuzzing = 0
-		  self.statusbar.SetStatusText("Fuzzing Status: Not fuzzing", 2)
-		  self.FuzzProgress.SetValue(0)
-		  self.updatevalues()
-                  return
-
-                if (self.wIndexfuzz):
-                  self.wIndex +=1
-	        else:
-                  break
+                        if (self.wIndexfuzz):
+                            self.wIndex +=1
+                        else:
+                            break
   
-              if (self.wValuefuzz):    
-                self.wValue +=1
-              else:
-                break
+                    if (self.wValuefuzz):    
+                        self.wValue +=1
+                    else:
+                        break
            
-            if (self.bRequestfuzz):  
-              self.bRequest +=1
-            else:
-              break 
-          if (self.bmRequestTypefuzz):  
-            self.bmRequestType +=1
-	  else:
- 	    break
+                if (self.bRequestfuzz):  
+                    self.bRequest +=1
+                else:
+                    break 
 
-	self.fuzzing = 0
-	self.statusbar.SetStatusText("Fuzzing Status: Not fuzzing", 2)
-	self.FuzzProgress.SetValue(0)
-	self.updatevalues()
-	return
+            if (self.bmRequestTypefuzz):  
+                self.bmRequestType +=1
+            else:
+                break
+
+        self.fuzzing = 0
+        self.statusbar.SetStatusText("Fuzzing Status: Not fuzzing", 2)
+        self.FuzzProgress.SetValue(0)
+        self.updatevalues()
+        return
     
     def StopFuzzing(self, event):
         self.fuzzing = 0
-	self.statusbar.SetStatusText("Fuzzing Status: Not fuzzing", 2)
+        self.statusbar.SetStatusText("Fuzzing Status: Not fuzzing", 2)
         return
         
     def UpdateText(self):
