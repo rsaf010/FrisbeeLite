@@ -110,9 +110,9 @@ class PidVidDialog(wx.Dialog):
         btn.SetDefault()
         btnsizer.AddButton(btn)
 
-        btn = wx.Button(self, wx.ID_CANCEL)
-        btnsizer.AddButton(btn)
-        btnsizer.Realize()
+        # btn = wx.Button(self, wx.ID_CANCEL)
+        # btnsizer.AddButton(btn)
+        # btnsizer.Realize()
 
         #sizer.Add(btnsizer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5)
 
@@ -586,17 +586,17 @@ class MainPanel(wx.Panel):
         
         self.dev.set_configuration()     
 
-    try:
-        print(time.strftime("%Y/%m/%d %H:%M:%S", time.localtime()))
-        print("    bmRequestType: " + "%02x" % self.bmRequestType + " bRequest: " + "%02x" % self.bRequest + " wValue: " + "%04x" % self.wValue + " wIndex: " + "%04x" % self.wIndex + " wLength: " + "%04x" % self.wLength)
+        try:
+            print(time.strftime("%Y/%m/%d %H:%M:%S", time.localtime()))
+            print("    bmRequestType: " + "%02x" % self.bmRequestType + " bRequest: " + "%02x" % self.bRequest + " wValue: " + "%04x" % self.wValue + " wIndex: " + "%04x" % self.wIndex + " wLength: " + "%04x" % self.wLength)
        	  
-        recv = self.dev.ctrl_transfer(self.bmRequestType, self.bRequest, self.wValue, self.wIndex, self.wLength)
-        print("Received: " + str(recv))
-        print("Received: " + recv [0])
-        print("Received: " + recv [0] [0])
+            recv = self.dev.ctrl_transfer(self.bmRequestType, self.bRequest, self.wValue, self.wIndex, self.wLength)
+            print("Received: " + str(recv))
+            print("Received: " + recv [0])
+            print("Received: " + recv [0] [0])
 
-    except:
-        pass
+        except:
+            pass
 
 
     def FuzzDevice(self, event):
@@ -618,7 +618,7 @@ class MainPanel(wx.Panel):
             wx.MessageBox("Device not found!", caption="Error", style=wx.OK|wx.ICON_ERROR, parent=self)	  
             return(1) 
  
-        self.dev.set_configuration()
+        # self.dev.set_configuration()
 
         if (self.bmRequestTypefuzz and not firstrun): 
             self.bmRequestType = 0
