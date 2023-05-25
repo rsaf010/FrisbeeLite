@@ -148,8 +148,8 @@ class MainPanel(wx.Panel):
         self.parent = parent
         self.frame = frame
 
-        self.pid = 0x1297	#iPhone
-        self.vid = 0x05ac	#iPhone
+        self.pid = 0	
+        self.vid = 0	
 
         self.dev = 0
 
@@ -559,6 +559,11 @@ class MainPanel(wx.Panel):
         if val == wx.ID_OK:
 
             self.dev = usb.core.find(idVendor=dlg.VID, idProduct=dlg.PID)
+
+            active_configuration = self.dev.get_active_configuration()
+            if active_configuration is None :
+                print("no config found")
+                self.dev.set_configuration()
  
             if self.dev is None:
                 self.statusbar.SetStatusText("Connection Status: Not connected", 1)
@@ -569,9 +574,10 @@ class MainPanel(wx.Panel):
 
                 self.statusbar.SetStatusText("Connection Status: Connected", 1)
                 wx.MessageBox("Connected to device", caption="Success", style=wx.OK|wx.ICON_INFORMATION, parent=self)	  
-                return(1)
                 self.vid = dlg.VID
                 self.pid = dlg.PID
+                return(1)
+                
    
         dlg.Destroy()
 
@@ -580,11 +586,15 @@ class MainPanel(wx.Panel):
     def SingleShot(self, event):
         if not self.dev:
                self.dev = usb.core.find(idVendor=self.vid, idProduct=self.pid)
+               active_configuration = self.dev.get_active_configuration()
+               if active_configuration is None :
+                print("no config found")
+                self.dev.set_configuration()
         if self.dev is None:
             wx.MessageBox("Device not found!", caption="Error", style=wx.OK|wx.ICON_ERROR, parent=self)
             return(1) 
         
-        self.dev.set_configuration()     
+             
 
         try:
             print(time.strftime("%Y/%m/%d %H:%M:%S", time.localtime()))
@@ -612,13 +622,14 @@ class MainPanel(wx.Panel):
 
         if not self.dev:
           self.dev = usb.core.find(idVendor=self.vid, idProduct=self.pid)
+          self.dev.set_configuration()
  
         if self.dev is None:
             self.statusbar.SetStatusText("Fuzzing Status: Not fuzzing", 2)
             wx.MessageBox("Device not found!", caption="Error", style=wx.OK|wx.ICON_ERROR, parent=self)	  
             return(1) 
  
-        # self.dev.set_configuration()
+        
 
         if (self.bmRequestTypefuzz and not firstrun): 
             self.bmRequestType = 0
